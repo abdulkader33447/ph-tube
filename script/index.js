@@ -16,7 +16,7 @@ function displayCategories(categories) {
     // create element
     const categoryDiv = document.createElement("div");
     categoryDiv.innerHTML = `
-    <button class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+    <button onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
     `;
     // append the element
     categoryContainer.append(categoryDiv);
@@ -30,8 +30,24 @@ function loadVideo() {
     .then((data) => displayVideos(data.videos));
 }
 
+
+// -------------load categories------------
+const loadCategoryVideos = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
+  // console.log(url);
+
+  fetch(url)
+  .then((res)=>res.json())
+  .then((data)=>displayVideos(data.category))
+
+};
+
 const displayVideos = (videos) => {
   const videoContainer = document.getElementById("video-container");
+
+// ----------clear display------
+videoContainer.innerHTML="";
+
   videos.forEach((video) => {
     console.log(video);
 
@@ -43,7 +59,7 @@ const displayVideos = (videos) => {
             src="${video.thumbnail}" />
             <span class="text-gray-300 absolute bottom-2 right-2 bg-black px-2 text-sm rounded-lg">${video.others.posted_date}</span>
         </figure>
-        <div class="flex gap-3 px-0 py-4">
+        <div class="flex gap-4 px-0 py-4">
           <div class="profile">
             <div class="avatar">
               <div class="ring-primary ring-offset-base-100 w-7 rounded-full ring ring-offset-2">
@@ -54,7 +70,7 @@ const displayVideos = (videos) => {
           <div class="intro">
             <h2 class="text-sm font-semibold">${video.title}</h2>
             
-            <p class="text-sm text-gray-400 flex gap3">${video.authors[0].profile_name}
+            <p class="text-sm text-gray-400 flex gap-3">${video.authors[0].profile_name}
               <img class="w-5 h-5" src="assets/verified.png" alt="">
             </p>
             <p class="text-sm text-gray-400">${video.others.views}</p>
@@ -66,6 +82,6 @@ const displayVideos = (videos) => {
   });
 };
 
-categoryContainer();
 
-loadVideo();
+
+categoryContainer();
