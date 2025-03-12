@@ -37,19 +37,30 @@ const displayVideos = (videos) => {
 
     const videoCard = document.createElement("div");
     videoCard.innerHTML = `
-    <div class="card  shadow-sm">
-  <figure>
-    <img
-      src="${video.thumbnail}" />
-  </figure>
-  <div class="card-body">
-    <h2 class="card-title">${video.title}</h2>
-    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
-    </div>
-  </div>
-</div>
+    <div class="card  ">
+        <figure class="relative">
+          <img class="w-full h-[150px] object-cover"
+            src="${video.thumbnail}" />
+            <span class="text-gray-300 absolute bottom-2 right-2 bg-black px-2 text-sm rounded-lg">${video.others.posted_date}</span>
+        </figure>
+        <div class="flex gap-3 px-0 py-4">
+          <div class="profile">
+            <div class="avatar">
+              <div class="ring-primary ring-offset-base-100 w-7 rounded-full ring ring-offset-2">
+                <img src="${video.authors[0].profile_picture}" />
+              </div>
+            </div>
+          </div>
+          <div class="intro">
+            <h2 class="text-sm font-semibold">${video.title}</h2>
+            
+            <p class="text-sm text-gray-400 flex gap3">${video.authors[0].profile_name}
+              <img class="w-5 h-5" src="assets/verified.png" alt="">
+            </p>
+            <p class="text-sm text-gray-400">${video.others.views}</p>
+          </div>
+        </div>
+      </div>
     `;
     videoContainer.append(videoCard);
   });
