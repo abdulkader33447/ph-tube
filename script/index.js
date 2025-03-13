@@ -16,7 +16,7 @@ function displayCategories(categories) {
     // create element
     const categoryDiv = document.createElement("div");
     categoryDiv.innerHTML = `
-    <button onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+    <button id="btn-${cat.category_id}" onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
     `;
     // append the element
     categoryContainer.append(categoryDiv);
@@ -30,23 +30,40 @@ function loadVideo() {
     .then((data) => displayVideos(data.videos));
 }
 
-
 // -------------load categories------------
 const loadCategoryVideos = (id) => {
   const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
   // console.log(url);
 
   fetch(url)
-  .then((res)=>res.json())
-  .then((data)=>displayVideos(data.category))
-
+    .then((res) => res.json())
+    .then((data) => {
+      const clickedButton = document.getElementById(`btn-${id}`);
+      clickedButton.classList.add('active')
+      console.log(clickedButton);
+      displayVideos(data.category);
+    });
 };
 
 const displayVideos = (videos) => {
   const videoContainer = document.getElementById("video-container");
 
-// ----------clear display------
-videoContainer.innerHTML="";
+  // ----------clear display------
+  videoContainer.innerHTML = "";
+
+  if (videos.length == 0) {
+    videoContainer.innerHTML = `
+  <div
+        class="col-span-full flex flex-col justify-center items-center py-14"
+      >
+        <img src="assets/Icon.png" alt="" />
+        <h2 class="text-2xl font-bold">
+          Oops!! Sorry, There is no content here
+        </h2>
+      </div>
+  `;
+    return;
+  }
 
   videos.forEach((video) => {
     console.log(video);
@@ -81,7 +98,5 @@ videoContainer.innerHTML="";
     videoContainer.append(videoCard);
   });
 };
-
-
 
 categoryContainer();
